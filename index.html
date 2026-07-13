@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>כמה אתם מוכנים כלכלית לתינוק? | RichLife</title>
+</head>
+<body>
+<style>
+  :root{
+    --ink:#1e2b25; --muted:#51625a; --line:#d3e0df;
+    --cream:#e9f1f2; --card:#ffffff;
+    --green:#3e5448; --green-soft:#e7efe9;
+    --brass:#5f7d6a; --brass-dark:#4d6857;
+    --r1:#c1553f; --r2:#d98a3d; --r3:#c9a94a; --r4:#3e7c5a;
+    --shadow:0 10px 40px rgba(62,84,72,.16);
+  }
+  html,body{margin:0;padding:0}
+  body{
+    direction:rtl;
+    font-family:"Heebo","Assistant","Segoe UI",system-ui,Arial,sans-serif;
+    background:linear-gradient(180deg,#eef4ef 0%,#e9f1f2 100%);
+    color:var(--ink); line-height:1.6; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  *{box-sizing:border-box}
+  .wrap{max-width:640px;margin:0 auto;padding:22px 18px 60px}
+  .brand{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;
+    color:var(--green);letter-spacing:.5px;margin-bottom:14px;font-size:15px}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--brass)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:22px;
+    box-shadow:var(--shadow);padding:30px 26px}
+  @media(max-width:480px){.card{padding:24px 18px;border-radius:18px}}
+  .progress{height:7px;background:#e9e3d6;border-radius:20px;overflow:hidden;margin-bottom:26px}
+  .progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--brass));
+    border-radius:20px;transition:width .35s ease}
+  h1{font-size:27px;line-height:1.25;margin:0 0 10px;color:var(--green)}
+  .lead{color:var(--muted);font-size:16px;margin:0 0 22px}
+  .step-kicker{font-size:13px;color:var(--brass-dark);font-weight:700;margin-bottom:8px}
+  .q{font-size:21px;font-weight:700;margin:0 0 6px;color:var(--ink)}
+  .qhint{font-size:14px;color:var(--muted);margin:0 0 16px}
+  .opts{display:flex;flex-direction:column;gap:11px}
+  .opt{display:flex;align-items:center;gap:12px;padding:15px 16px;border:1.5px solid var(--line);
+    border-radius:14px;background:#fff;cursor:pointer;font-size:16px;transition:.15s;text-align:right}
+  .opt:hover{border-color:var(--brass);transform:translateY(-1px)}
+  .opt .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:0 0 auto}
+  .opt.sel{border-color:var(--green);background:var(--green-soft)}
+  .opt.sel .tick{border-color:var(--green);background:var(--green);box-shadow:inset 0 0 0 3px var(--green-soft)}
+  .numwrap{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;
+    background:#fff;padding:4px 18px}
+  .numwrap:focus-within{border-color:var(--green)}
+  .numinput{flex:1;border:none;outline:none;font-size:24px;font-weight:800;font-family:inherit;
+    padding:14px 0;background:transparent;text-align:right;color:var(--ink)}
+  .numwrap .cur{font-size:22px;color:var(--muted);font-weight:800}
+  .numskip{margin-top:12px;text-align:center;font-size:14px;color:var(--muted);
+    text-decoration:underline;cursor:pointer;padding:6px}
+  .numskip:hover{color:var(--ink)}
+  .numskip.sel{color:var(--green);font-weight:700;text-decoration:none}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+  .btn{border:none;border-radius:100px;padding:13px 30px;font-size:16px;font-weight:700;
+    cursor:pointer;font-family:inherit;transition:.15s}
+  .btn-primary{background:var(--green);color:#fff}
+  .btn-primary:hover{background:#163a34}
+  .btn-primary:disabled{background:#b9c6c1;cursor:not-allowed}
+  .btn-ghost{background:none;color:var(--muted);padding:13px 6px}
+  .btn-ghost:hover{color:var(--ink)}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+  .field input{width:100%;padding:14px 15px;border:1.5px solid var(--line);border-radius:12px;
+    font-size:16px;font-family:inherit;background:#fff}
+  .field input:focus{outline:none;border-color:var(--green)}
+  .fineprint{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:15px;
+    padding:8px 16px;border-radius:30px;margin-bottom:16px}
+  .rmeter{height:12px;background:#ece6da;border-radius:20px;overflow:hidden;margin:6px 0 22px}
+  .rmeter > i{display:block;height:100%;border-radius:20px;transition:width .8s ease}
+  .read{font-size:16px;margin:0 0 18px}
+  .personal{background:#eef4f1;border:1px solid var(--green-soft);border-radius:14px;
+    padding:16px 18px;margin:0 0 20px;font-size:15px}
+  .personal b{color:var(--green)}
+  .gaps{background:#fbf7ee;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
+  .gaps h3{margin:0 0 10px;font-size:15px;color:var(--brass-dark)}
+  .gaps ul{margin:0;padding-inline-start:20px}
+  .gaps li{margin-bottom:6px}
+  .gaps .hl{color:#c1553f;font-weight:800}
+  .urg{border-inline-start:4px solid var(--brass);background:#fdf9f0;padding:12px 16px;
+    border-radius:10px;margin:0 0 22px;font-weight:600}
+  .cta{background:var(--green);color:#fff;border-radius:18px;padding:24px 22px;text-align:center}
+  .cta h2{margin:0 0 8px;font-size:21px}
+  .cta p{margin:0 0 16px;color:#d6e6e0;font-size:15px}
+  .cta a{display:inline-block;background:#eef4ef;color:#243a30;text-decoration:none;
+    font-weight:800;padding:14px 32px;border-radius:100px;font-size:16px}
+  .cta a:hover{background:#dbe8de}
+  .hidden{display:none}
+  .center{text-align:center}
+</style>
+
+<div class="wrap">
+  <div class="brand"><span class="dot"></span> RichLife · טלי בנימינוב</div>
+  <div class="card">
+    <div class="progress"><i id="bar"></i></div>
+
+    <section id="intro">
+      <div class="step-kicker">שאלון קצר · כ־3 דקות</div>
+      <h1>כמה אתם באמת מוכנים כלכלית להביא תינוק?</h1>
+      <p class="lead">רוב הזוגות נכנסים להריון ומגלים את המספרים תוך כדי, בלחץ. עונים על כמה שאלות פשוטות, ומקבלים תמונה אישית של איפה אתם עומדים, מה הפערים, וכמה בערך צריך להיות בצד לפני.</p>
+      <div class="center"><button class="btn btn-primary" onclick="start()">מתחילים →</button></div>
+    </section>
+
+    <section id="quiz" class="hidden">
+      <div class="step-kicker" id="qk"></div>
+      <p class="q" id="qtext"></p>
+      <p class="qhint hidden" id="qhint"></p>
+      <div class="opts" id="opts"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" id="back" onclick="back()">← חזרה</button>
+        <button class="btn btn-primary" id="next" onclick="next()" disabled>הבא →</button>
+      </div>
+    </section>
+
+    <section id="form" class="hidden">
+      <div class="step-kicker">כמעט שם</div>
+      <h1 style="font-size:23px">לאן לשלוח את התוצאה האישית שלכם?</h1>
+      <p class="lead">מכינים לכם עכשיו קריאה אישית של רמת המוכנות והפערים. נשאיר פרטים ונראה אותה מיד.</p>
+      <div class="field"><label>שם</label><input id="f_name" type="text" placeholder="איך קוראים לך?"></div>
+      <div class="field"><label>טלפון</label><input id="f_phone" type="tel" placeholder="050-0000000"></div>
+      <div class="field"><label>אימייל</label><input id="f_email" type="email" placeholder="you@email.com"></div>
+      <div class="center" style="margin-top:18px">
+        <button class="btn btn-primary" id="showres" onclick="showResult()">הראו לי את התוצאה שלי</button>
+      </div>
+      <p class="fineprint">הפרטים נשמרים אצל טלי בלבד, בשביל לשלוח לך את התוצאה והמדריך. בלי ספאם.</p>
+    </section>
+
+    <section id="result" class="hidden">
+      <span class="badge" id="r_badge"></span>
+      <div class="rmeter"><i id="r_meter"></i></div>
+      <p class="read" id="r_read"></p>
+      <div class="personal" id="r_personal"></div>
+      <div class="gaps" id="r_gaps_box">
+        <h3>מה חסר ומעכב אתכם:</h3>
+        <ul id="r_gaps"></ul>
+      </div>
+      <div class="urg" id="r_urg"></div>
+      <div class="cta" id="r_cta"></div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+const GUIDE_URL = "#";
+const CALL_URL  = "https://richlife.ravpage.co.il/service1one1";
+
+const QS = [
+  { key:"time", type:"ctx", q:"מתי הייתם רוצים להיכנס להריון?",
+    a:["בשנה הקרובה","עוד שנה־שנתיים","בעוד 3 שנים או יותר","עדיין לא בטוחים"] },
+
+  { key:"income", type:"num", q:"כמה אתם מכניסים ביחד, נטו בחודש?",
+    hint:"סכום שני בני הזוג יחד, אחרי מיסים. כתבו מספר.", ph:"למשל 18,000", skip:"אני לא בטוח/ה כמה" },
+
+  { key:"expense", type:"num", q:"וכמה בערך אתם מוציאים בחודש?",
+    hint:"בערך, כולל הכל: דיור, חשבונות, אוכל, בילויים. כתבו מספר.", ph:"למשל 14,000", skip:"אני לא באמת יודע/ת כמה" },
+
+  { key:"leave", type:"ctx", q:"כמה זמן היית רוצה להיות בחופשת לידה?",
+    hint:"דמי הלידה מביטוח לאומי משתנים לפי כמה עבדת וכמה שילמת, זה יכול להיות 8 עד 15 שבועות בלבד. כל מה שמעבר, על חשבונכם.",
+    a:["הבסיס בחוק","כחצי שנה","שנה","כמה שיותר, תלוי בכסף"] },
+
+  { key:"conduct", gap:"ההתנהלות הכלכלית שלכם <span class='hl'>עוד לא יציבה</span>", q:"איך הייתם מתארים את ההתנהלות הכלכלית שלכם?",
+    a:[["בקושי סוגרים, מינוס או הלוואות",0],["לפעמים במינוס, לא יציב",1],["מסתדרים, אבל כמעט לא חוסכים",2],["בשליטה, חוסכים בקביעות",3]] },
+
+  { key:"cushion", gap:"כמעט <span class='hl'>אין לכם כרית ביטחון</span> נזילה", q:"אם מחר ההכנסה נעצרת, לכמה זמן יש לכם כסף נזיל להחזיק?",
+    hint:"כסף זמין מיד, לא כולל פנסיה/קרנות סגורות",
+    a:[["אין לנו, ממש כלום",0],["פחות מחודש",1],["1–3 חודשים",2],["חצי שנה ומעלה",3]] },
+
+  { key:"costcalc", bg:true, gap:"<span class='hl'>עוד לא חישבתם</span> כמה יעלה התינוק בשנה הראשונה", q:"חישבתם כבר כמה יעלה התינוק בשנה הראשונה?",
+    hint:"עגלה, מיטה, מעון/מטפלת, ציוד, ביגוד, וכל השאר",
+    a:[["לא, עוד לא חישבנו",0],["ניחשנו בגדול",1],["יש לנו הערכה לא רעה",2],["כן, ישבנו וחישבנו",3]] },
+
+  { key:"matpay", bg:true, gap:"<span class='hl'>לא בררתם</span> כמה תקבלו בחופשת הלידה", q:"את יודעת כמה תקבלי בחופשת הלידה? (דמי לידה מביטוח לאומי)",
+    a:[["אין לי מושג",0],["יש לי הערכה גסה",1],["אני יודעת בערך",2],["בדקתי, יודעת בדיוק",3]] },
+
+  { key:"funding", bg:true, gap:"<span class='hl'>אין לכם עדיין תוכנית</span> איך לממן את הלידה וחופשת הלידה", q:"איך אתם מתכננים לממן את הלידה, הקניות וחופשת הלידה?",
+    a:[["עוד לא חשבנו, נסתדר איכשהו",0],["נסמוך על עזרה מההורים או מתנות",1],["יש לנו קצת חיסכון בצד",2],["בונים חיסכון ייעודי לזה",3]] },
+
+  { key:"insure", bg:true, gap:"<span class='hl'>אין כיסוי ביטוחי מסודר</span>, וכדאי לסדר אותו לפני ההיריון", q:"יש לכם ביטוחים פרטיים מסודרים? (בריאות / אובדן כושר עבודה)",
+    hint:"מומלץ לעשות אותם עוד לפני ההיריון",
+    a:[["אין לנו",0],["לא בטוח/ה מה יש לנו",1],["חלקית",2],["כן, מסודר ומעודכן",3]] },
+
+  { key:"rights", bg:true, gap:"<span class='hl'>לא יודעים אילו זכויות</span> והטבות מגיעות לכם", q:"אתם יודעים אילו זכויות והטבות כספיות מגיעות להורים טריים?",
+    a:[["אין לי מושג",0],["שמעתי על כמה",1],["יודע/ת חלק",2],["מכיר/ה, ואדע לממש",3]] },
+
+  { key:"childfuture", bg:true, gap:"<span class='hl'>עוד לא תכננתם</span> איך לבנות לתינוק עתיד כלכלי", q:"חשבתם איך לדאוג לתינוק לעתיד כלכלי טוב יותר?",
+    hint:"חיסכון או השקעה עבורו כבר מהיום הראשון",
+    a:[["עוד לא חשבנו על זה",0],["שמענו על 'חיסכון לכל ילד'",1],["מתכננים לפתוח חיסכון/השקעה עבורו",2],["כבר יודעים בדיוק איך נבנה לו עתיד",3]] },
+
+  { key:"setup", type:"ctx", q:"איך אתם מנהלים את הכסף כזוג?",
+    a:["חשבון משותף, ומודעים לכל הוצאה אחד של השני","חשבון משותף למשק בית + חשבון אישי לכל אחד","כל אחד מנהל את שלו, פחות מודעים","בעיקר אחד מאיתנו מנהל את הכל"] },
+
+  { key:"couple", gap:"השיח הכלכלי ביניכם <span class='hl'>עוד לא לגמרי מסונכרן</span>", q:"כשעולה נושא של כסף ביניכם, מה בדרך כלל קורה?",
+    a:[["מתחמקים, כמעט לא מדברים",0],["מדברים, אבל זה מתפוצץ לוויכוח",1],["מדברים, אבל בלי להגיע להחלטה",2],["מדברים בפתיחות ומחליטים ביחד",3]] },
+];
+
+const SCORED = QS.filter(q=>q.type!=="ctx" && q.type!=="num").length;
+const MAX = SCORED*3;
+let idx = 0;
+const answers = {};
+function el(id){return document.getElementById(id)}
+function setBar(p){el('bar').style.width = p+"%"}
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function round5(n){ return Math.round(n/5000)*5000; }
+function start(){ el('intro').classList.add('hidden'); el('quiz').classList.remove('hidden'); render(); }
+function render(){
+  const Q = QS[idx];
+  el('qk').textContent = "שאלה " + (idx+1) + " מתוך " + QS.length;
+  el('qtext').textContent = Q.q;
+  const hint=el('qhint');
+  if(Q.hint){ hint.textContent=Q.hint; hint.classList.remove('hidden'); } else { hint.classList.add('hidden'); }
+  const box = el('opts'); box.innerHTML="";
+  if(Q.type==="num"){
+    const w=document.createElement('div'); w.className='numwrap';
+    const inp=document.createElement('input'); inp.type='text'; inp.inputMode='numeric';
+    inp.className='numinput'; inp.placeholder=Q.ph||'סכום בשקלים';
+    inp.value = (answers[Q.key] && !answers[Q.key].unknown) ? fmt(answers[Q.key].val) : '';
+    const cur=document.createElement('span'); cur.className='cur'; cur.textContent='₪';
+    w.appendChild(inp); w.appendChild(cur); box.appendChild(w);
+    const sk=document.createElement('div'); sk.className='opt'; sk.style.marginTop='6px';
+    sk.innerHTML='<span class="tick"></span><span>'+(Q.skip||'אני לא בטוח/ה')+'</span>';
+    box.appendChild(sk);
+    function refreshNum(){
+      sk.classList.toggle('sel', !!(answers[Q.key] && answers[Q.key].unknown));
+      el('next').disabled = !answers[Q.key];
+    }
+    inp.oninput=()=>{ const digits=inp.value.replace(/[^\d]/g,''); const v=parseInt(digits,10);
+      if(v>0){ answers[Q.key]={label:fmt(v),val:v}; inp.value=fmt(v); } else { delete answers[Q.key]; }
+      refreshNum(); };
+    sk.onclick=()=>{ answers[Q.key]={label:'לא יודע/ת',val:null,unknown:true}; inp.value=''; refreshNum(); };
+    refreshNum();
+  } else {
+    Q.a.forEach((opt)=>{
+      const label = Array.isArray(opt)?opt[0]:opt;
+      const d = document.createElement('div');
+      d.className='opt'; d.innerHTML='<span class="tick"></span><span>'+label+'</span>';
+      if(answers[Q.key] && answers[Q.key].label===label) d.classList.add('sel');
+      d.onclick=()=>{ answers[Q.key]={label,val:(Array.isArray(opt)?opt[1]:null)}; render(); };
+      box.appendChild(d);
+    });
+  }
+  el('back').style.visibility = idx===0 ? 'hidden':'visible';
+  el('next').disabled = !answers[Q.key];
+  el('next').textContent = idx===QS.length-1 ? "לתוצאה →" : "הבא →";
+  setBar( Math.round((idx/QS.length)*72) );
+}
+function next(){
+  if(!answers[QS[idx].key]) return;
+  if(idx < QS.length-1){ idx++; render(); }
+  else { el('quiz').classList.add('hidden'); el('form').classList.remove('hidden'); setBar(88); }
+}
+function back(){ if(idx>0){ idx--; render(); } }
+
+function showResult(){
+  const lead = { name:el('f_name').value, phone:el('f_phone').value, email:el('f_email').value };
+  let score=0; let gaps=[];
+  QS.forEach(Q=>{
+    if(Q.type==="ctx"||Q.type==="num") return;
+    const a=answers[Q.key]; if(!a) return;
+    score+=a.val;
+    if(a.val<=1 && Q.gap) gaps.push({t:Q.gap, bg:!!Q.bg});
+  });
+  const expUnknown = answers.expense && answers.expense.unknown;
+  if(expUnknown) gaps.unshift({t:"<span class='hl'>עוד לא יודעים</span> כמה אתם מוציאים בחודש", bg:false});
+  gaps.sort((a,b)=> (a.bg===b.bg?0:(a.bg?-1:1)));
+  const pct = Math.round((score/MAX)*100);
+
+  let tier;
+  if(score<=9)       tier={n:1,name:"רק בתחילת הדרך",emoji:"🔴",color:"var(--r1)"};
+  else if(score<=16) tier={n:2,name:"יש בסיס, אבל חסר עוד הרבה",emoji:"🟠",color:"var(--r2)"};
+  else if(score<=22) tier={n:3,name:"קרובים מאוד",emoji:"🟡",color:"var(--r3)"};
+  else               tier={n:4,name:"מוכנים ומוגנים",emoji:"🟢",color:"var(--r4)"};
+
+  const READ = {
+    1:"אתם ממש בתחילת הדרך, וזה בסדר גמור, כי אתם כאן <b>לפני</b>, כשעוד יש זמן להתכונן. אבל בכנות: אם תיכנסו להריון עכשיו, סביר שתגלו את המספרים תוך כדי, בלחץ. הבשורה הטובה, כל חודש שמתחילים בו מהיום עובד לטובתכם.",
+    2:"יש לכם על מה להישען, אבל עוד לא הגעתם למקום שבו אפשר להיכנס להריון בראש שקט. יש כמה פערים שכדאי לסגור לפני, וכשסוגרים אותם נכון התמונה משתנה מהר.",
+    3:"אתם במצב יפה, קרובים. נשאר לסגור כמה פערים ממוקדים כדי להיכנס להריון בראש שקט לגמרי. עם תכנון נכון תהיו מוכנים מהר.",
+    4:"כל הכבוד, אתם מהמעטים שמגיעים לרגע הזה מוכנים ומוגנים. אז השאלה הבאה כבר לא 'האם אנחנו יכולים', אלא איך מביאים את התינוק לעולם עם יתרון כלכלי אמיתי, ומממשים כל זכות והטבה בלי לפספס אף שקל."
+  };
+
+  el('r_badge').textContent = tier.emoji+"  "+tier.name;
+  el('r_badge').style.background = tier.color+"22";
+  el('r_badge').style.color = tier.color;
+  el('r_meter').style.width = pct+"%";
+  el('r_meter').style.background = tier.color;
+  el('r_read').innerHTML = (lead.name?("<b>"+lead.name+"</b>, "):"") + READ[tier.n];
+
+  // ----- סיכום אישי שזור בתשובות -----
+  let p = "";
+  const incV = (answers.income && !answers.income.unknown) ? answers.income.val : null;
+  const expV = (answers.expense && !answers.expense.unknown) ? answers.expense.val : null;
+  const lv  = answers.leave ? answers.leave.label : "";
+  const tm  = answers.time ? answers.time.label : "";
+  let surplus = null;
+
+  if(incV && expV){
+    p += "אתם מכניסים <b>"+fmt(incV)+" ₪</b> ומוציאים <b>"+fmt(expV)+" ₪</b> בחודש. ";
+    surplus = incV - expV;
+    if(surplus < 0) p += "כלומר אתם כבר מוציאים <span class='hl'>יותר ממה שנכנס</span>, עוד לפני שיש תינוק. הצעד הראשון הוא לבנות תקציב שנשאר בו עודף, כי ילד מוסיף הוצאה קבועה כל חודש.";
+    else if(surplus < 2000) p += "כלומר נשאר לכם רק כ-<b>"+fmt(surplus)+" ₪</b> בחודש, וזה עוד לפני שהתינוק מוסיף הוצאות.";
+  } else if(expUnknown){
+    p += "<span class='hl'>אתם עוד לא יודעים כמה אתם מוציאים בחודש.</span><br>וזה הדבר הראשון לסדר, כי בלי לדעת את הבסיס אי אפשר לתכנן כמה צריך לתינוק.";
+  }
+
+  let tline = "";
+  if(tm==="בשנה הקרובה") tline = "אתם מתכננים להיכנס להריון כבר השנה. ";
+  else if(tm) tline = "אתם מתכננים להיכנס להריון "+tm+". ";
+  if(tline) p += "<br><br>"+tline;
+  if(expV){
+    const base = (lv==="הבסיס בחוק") ? 15000 : (lv==="כחצי שנה") ? 38000 : (lv==="שנה") ? 58000 : 65000;
+    const scale = Math.min(1.35, Math.max(0.75, 0.7 + 0.3*(expV/14000)));
+    const fund = base*scale;
+    const xl = round5(fund*0.88), xh = round5(fund*1.15);
+    const leaveTxt = (lv==="הבסיס בחוק") ? "תקופת חופשת הלידה" : "חופשת לידה של "+lv;
+    p += "כדי לממן את הרכישות, המעון ואת "+leaveTxt+" שאתם רוצים, צריך בערך <b>"+fmt(xl)+"–"+fmt(xh)+" ₪</b>. אבל דמי הלידה מכסים רק 8 עד 15 שבועות (תלוי כמה עבדתם ושילמתם), וכל השאר על חשבונכם. ";
+    if(surplus && surplus>0){
+      const months = Math.ceil(fund/surplus);
+      p += "בקצב של <b>"+fmt(surplus)+" ₪</b> שנשאר לכם בחודש, לצבור את הסכום הזה ייקח בערך <b>"+months+" חודשים</b>. ";
+    }
+  }
+
+  const fndA = answers.funding;
+  const cc = answers.costcalc ? answers.costcalc.label : "";
+  let fp = "";
+  if(fndA && fndA.val<=1){
+    fp += "לפי מה שעניתם, <span class='hl'>אין לכם עדיין חיסכון או קופה ייעודית</span> ללידה ולתינוק. ";
+    if(fndA.label==="נסמוך על עזרה מההורים או מתנות") fp += "אתם בונים בעיקר על מתנות ועזרה מההורים, וזה לא משהו יציב להישען עליו. ";
+  }
+  if(cc==="לא, עוד לא חישבנו" || cc==="ניחשנו בגדול") fp += "וחשוב לזכור, עדיין אין לכם תמונה מדויקת של כמה תצטרכו לקניות ולשנה הראשונה. ";
+  if(fp) p += "<br><br>"+fp;
+
+  const insA = answers.insure;
+  const cfA = answers.childfuture;
+  let vp = "";
+  if(insA && insA.val===0) vp += "כרגע אין לכם ביטוחים פרטיים מסודרים, ומומלץ לסדר אותם עוד לפני ההיריון (לחלקם יש תקופת אכשרה). ";
+  else if(insA && insA.val===1) vp += "וכנראה אתם גם <span class='hl'>לא מודעים לביטוחים שכבר יש לכם</span>, שיכולים להיות שווים לכם המון כסף. ";
+  if(cfA && cfA.val<=2) vp += "ועדיין לא תכננתם איך לבנות לתינוק עתיד כלכלי. כשהוא ייוולד, בשילוב של 'חיסכון לכל ילד' וחיסכון חיצוני נוסף, אפשר לבנות לו <b>כ-200,000 ₪ עד גיל 21</b> עם לא הרבה מאמץ, אבל כדאי לדעת כבר עכשיו איך ובאילו מסלולים, כדי להתחיל נכון מהיום הראשון. ";
+  if(vp) p += "<br><br>"+vp;
+
+  const st = answers.setup ? answers.setup.label : "";
+  const cpA = answers.couple;
+  let cp = "";
+  if(st==="בעיקר אחד מאיתנו מנהל את הכל") cp += "כרגע בעיקר אחד מכם מנהל את הכסף. ";
+  else if(st==="כל אחד מנהל את שלו, פחות מודעים") cp += "כרגע כל אחד מכם מנהל את שלו בנפרד. ";
+  if(cpA && cpA.val<=2) cp += (cp?"וגם ":"") + "התקשורת שלכם סביב כסף עדיין לא לגמרי עובדת, וכדאי לחזק אותה. ";
+  if(cp) p += "<br><br>"+cp+"ולקראת תינוק חשוב ששניכם תהיו באותו ראש ותראו את התמונה המלאה ביחד. ";
+
+  {
+    let cush = "ועוד לא דיברנו על <span class='hl'>כרית ביטחון</span> שתגן עליכם אם מי שממשיך לפרנס יאבד את מקום העבודה, או חלילה תאונה או מחלה, דווקא כשההכנסה כבר נמוכה בגלל החופשה";
+    if(expV){ const cl = round5(expV*4), ch = round5(expV*6); cush += ", בערך <b>"+fmt(cl)+"–"+fmt(ch)+" ₪</b>"; }
+    p += "<br><br>"+cush + ". ";
+  }
+  p += "<br><br><b>כמה בדיוק במקרה שלכם, המספר המדויק לפי סגנון החיים שלכם והפער האמיתי, מחכה לכם במדריך.</b>";
+  el('r_personal').innerHTML = p;
+
+  const gbox=el('r_gaps_box');
+  if(gaps.length){ el('r_gaps').innerHTML = gaps.map(g=>"<li>"+g.t+"</li>").join(""); gbox.classList.remove('hidden'); }
+  else { gbox.classList.add('hidden'); }
+
+  let urg="";
+  if(tier.n<=2 && tm==="בשנה הקרובה") urg="רציתם כבר בשנה הקרובה, אבל הפערים האלה לוקחים זמן לסגור. כל חודש עכשיו חשוב.";
+  else if(tier.n<=2) urg="הפערים האלה לוקחים זמן לסגור, אז ככל שמתחילים מוקדם יותר, קל יותר.";
+  else if(tm==="בשנה הקרובה") urg="אתם קרובים, ורציתם בקרוב, זה בדיוק הזמן לסגור את הפינות האחרונות.";
+  else urg="יש לכם יתרון הזמן. שווה לנצל אותו כדי להגיע מוכנים לגמרי.";
+  el('r_urg').textContent = urg;
+
+  let cta;
+  if(tier.n<=3){
+    cta='<h2>עכשיו, איך סוגרים את הפערים האלה?</h2>'+
+        '<p style="text-align:right">המדריך "מתכוננים ללידה כלכלית" נותן לכם בדיוק את זה:</p>'+
+        '<ul style="text-align:right;margin:0 0 16px;padding-inline-start:18px;color:#eaf3ef;font-size:15px;line-height:1.85">'+
+          '<li>מחשבון קרן חופשת לידה שמראה את <b>המספר המדויק שלכם</b></li>'+
+          '<li>איך לחשב כמה תקבלי בדמי לידה, הנוסחה המדויקת</li>'+
+          '<li>אילו ביטוחים לעשות <b>עוד לפני ההיריון</b> כדי לחסוך אלפי שקלים</li>'+
+          '<li>כל הזכויות, וגם איך לבנות לתינוק עתיד כלכלי, שלב-אחר-שלב</li>'+
+        '</ul>'+
+        '<a href="'+GUIDE_URL+'">למדריך המלא ←</a>';
+  } else {
+    cta='<h2>אתם מוכנים לצעד הבא</h2>'+
+        '<p>לבנות לתינוק יתרון כלכלי אמיתי ולמצות כל זכות, זה כבר תכנון אישי. בואו נדבר.</p>'+
+        '<a href="'+CALL_URL+'">לשיחת התאמה ללא עלות ←</a>';
+  }
+  el('r_cta').innerHTML = cta;
+
+  el('form').classList.add('hidden');
+  el('result').classList.remove('hidden');
+  setBar(100);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
