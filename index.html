@@ -427,6 +427,20 @@ function showResult(){
   setBar(100);
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+/* קיצור דרך לבדיקה: ?demo=1 קופץ ישר לתוצאה עם נתוני דוגמה */
+(function(){
+ try{ if(new URLSearchParams(location.search).has('demo')){
+   answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};
+   answers.leave={label:"שנה"};answers.conduct={label:"מסתדרים, אבל כמעט לא חוסכים",val:2};answers.cushion={label:"פחות מחודש",val:1};
+   answers.costcalc={label:"ניחשנו בגדול",val:1};answers.matpay={label:"אין לי מושג",val:0};
+   answers.funding={label:"נסמוך על עזרה מההורים או מתנות",val:1};answers.insure={label:"לא בטוח/ה מה יש לנו",val:1};
+   answers.rights={label:"שמעתי על כמה",val:1};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};
+   answers.raise={label:"ניתן לו את מה שצריך, עם גבולות",val:2};answers.setup={label:"כל אחד מנהל את שלו, פחות מודעים"};
+   answers.couple={label:"מדברים, אבל בלי להגיע להחלטה",val:2};
+   el('f_name').value="טלי"; el('intro').classList.add('hidden'); showResult();
+ }}catch(e){}
+})();
 </script>
 </body>
 </html>
