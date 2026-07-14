@@ -454,7 +454,9 @@ function showResult(){
 
 /* קיצור בדיקה: ?demo=1..4 קופץ ישר לתוצאה עם פרופיל, ומראה מה נענה */
 (function(){
- var d=new URLSearchParams(location.search).get('demo'); if(!d) return;
+ var qp=new URLSearchParams(location.search);
+ if(qp.has('form')){ try{ answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};answers.leave={label:"שנה"};answers.conduct={label:"מסתדרים",val:2};answers.cushion={label:"פחות מחודש",val:1};answers.costcalc={label:"ניחשנו בגדול",val:1};answers.matpay={label:"אין לי מושג",val:0};answers.funding={label:"נסמוך על עזרה מההורים או מתנות",val:1};answers.insure={label:"לא בטוח/ה מה יש לנו",val:1};answers.rights={label:"שמעתי על כמה",val:1};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};answers.raise={label:"עם גבולות",val:2};answers.setup={label:"כל אחד מנהל את שלו",};answers.couple={label:"בלי החלטה",val:2}; el('intro').classList.add('hidden'); el('form').classList.remove('hidden'); }catch(e){} return; }
+ var d=qp.get('demo'); if(!d) return;
  var P={
   '1':{name:"רמה נמוכה · זוג במינוס, רוצים שנה בבית",fn:function(){
     answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};
