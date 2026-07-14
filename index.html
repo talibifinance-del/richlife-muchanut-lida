@@ -75,8 +75,8 @@
   .rmeter{height:12px;background:#ece6da;border-radius:20px;overflow:hidden;margin:6px 0 22px}
   .rmeter > i{display:block;height:100%;border-radius:20px;transition:width .8s ease}
   .read{font-size:16px;margin:0 0 18px}
-  .personal{background:#eef4f1;border:1px solid var(--green-soft);border-radius:14px;
-    padding:16px 18px;margin:0 0 20px;font-size:15px}
+  .personal{
+    margin:0 0 20px;font-size:15px}
   .personal b{color:var(--green)}
   .gaps{background:#fbf7ee;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
   .gaps h3{margin:0 0 10px;font-size:15px;color:var(--brass-dark)}
@@ -84,6 +84,10 @@
   .gaps li{margin-bottom:6px}
   .gaps .hl{color:#c1553f;font-weight:800}
   .personal .hl{color:#c1553f;font-weight:800}
+  .insights{list-style:none;padding:0;margin:0;display:grid;gap:11px}
+  .insights li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:15px;line-height:1.6;color:var(--ink)}
+  .insights li b{color:var(--green)}
+  .tease{margin-top:16px;background:var(--green);color:#fff;border-radius:14px;padding:15px 16px;font-size:15.5px;font-weight:700;text-align:center;line-height:1.5}
   .urg{border-inline-start:4px solid var(--brass);background:#fdf9f0;padding:12px 16px;
     border-radius:10px;margin:0 0 22px;font-weight:600}
   .cta{background:var(--green);color:#fff;border-radius:18px;padding:24px 22px;text-align:center}
@@ -153,7 +157,7 @@
       <div class="costinfo" id="r_costinfo">רק שתדעו: תינוק מוסיף לכם <b>הוצאה חודשית קבועה</b> של בערך <b>1,500-2,500 ₪</b> (חיתולים, מטרנה, ביגוד, תרופות ועוד). ואם מתכננים מעון מגיל חצי שנה, להוסיף עוד <b>3,500-5,500 ₪ בחודש</b>, וצריך להיערך לזה מראש.</div>
       <div class="personal" id="r_personal"></div>
       <div class="gaps" id="r_gaps_box">
-        <h3>מה חסר ומעכב אתכם:</h3>
+        <h3>מה חסר לכם כדי להיות מוכנים כלכלית ללידה?</h3>
         <ul id="r_gaps"></ul>
       </div>
       <div class="urg" id="r_urg"></div>
@@ -310,68 +314,66 @@ function showResult(){
   el('r_meter').style.background = tier.color;
   el('r_read').innerHTML = (lead.name?("<b>"+lead.name+"</b>, "):"") + READ[tier.n];
 
-  // ----- סיכום אישי שזור בתשובות -----
-  let p = "";
+  // ----- סיכום אישי: כרטיסים קצרים וסקאנביליים -----
   const incV = (answers.income && !answers.income.unknown) ? answers.income.val : null;
   const expV = (answers.expense && !answers.expense.unknown) ? answers.expense.val : null;
   const lv  = answers.leave ? answers.leave.label : "";
-  const tm  = answers.time ? answers.time.label : "";
-  let surplus = null;
+  const surplus = (incV!=null && expV!=null) ? incV-expV : null;
+  const items = [];
 
   if(incV && expV){
-    p += "אתם מכניסים <b>"+fmt(incV)+" ₪</b> ומוציאים <b>"+fmt(expV)+" ₪</b> בחודש. ";
-    surplus = incV - expV;
-    if(surplus < 0) p += "כלומר אתם כבר מוציאים <span class='hl'>יותר ממה שנכנס</span>, עוד לפני שיש תינוק. <b>הצעד הראשון הוא לבנות תקציב שנשאר בו עודף</b>, כי ילד מוסיף הוצאה קבועה כל חודש.";
-    else if(surplus < 2000) p += "כלומר נשאר לכם רק כ-<b>"+fmt(surplus)+" ₪</b> בחודש, וזה עוד לפני שהתינוק מוסיף הוצאות.";
+    let t = "אתם מכניסים <b>"+fmt(incV)+" ₪</b> ומוציאים <b>"+fmt(expV)+" ₪</b> בחודש. ";
+    if(surplus < 0) t += "<span class='hl'>כבר מוציאים יותר ממה שנכנס</span>, עוד לפני תינוק.";
+    else if(surplus < 2000) t += "נשאר לכם רק כ-<b>"+fmt(surplus)+" ₪</b>, עוד לפני שהתינוק מוסיף הוצאות.";
+    items.push(t);
   } else if(expUnknown){
-    p += "<span class='hl'>אתם עוד לא יודעים כמה אתם מוציאים בחודש.</span><br>וזה הדבר הראשון לסדר, כי בלי לדעת את הבסיס אי אפשר לתכנן כמה צריך לתינוק.";
+    items.push("<span class='hl'>עדיין אין לכם תמונה של כמה אתם מוציאים בחודש</span>, וזה הדבר הראשון לסדר.");
   }
 
-  let tline = "";
-  if(tm==="בשנה הקרובה") tline = "אתם מתכננים להיכנס להריון כבר השנה. ";
-  else if(tm) tline = "אתם מתכננים להיכנס להריון "+tm+". ";
-  if(tline) p += "<br><br>"+tline;
-  if(lv){
-    const leaveTxt = (lv==="הבסיס בחוק") ? "תקופת חופשת הלידה" : "חופשת לידה של "+lv;
-    p += "כדי לממן את "+leaveTxt+" שאתם רוצים, צריך לכסות את הפער בין מה שנכנס בזמן החופשה (מה שבן/בת הזוג ממשיך להרוויח + דמי הלידה) לבין ההוצאות, כולל התוספת החודשית של התינוק. דמי הלידה מכסים רק 8 עד 15 שבועות (תלוי כמה עבדתם ושילמתם), וכל השאר על חשבונכם. <b>הפער המדויק תלוי בהכנסות שלכם, והחישוב האישי מחכה לכם במדריך.</b> ";
+  if(lv && lv!=="הבסיס בחוק"){
+    if(expV){
+      const base = (lv==="כחצי שנה")?38000:(lv==="שנה")?58000:65000;
+      const scale = Math.min(1.35, Math.max(0.75, 0.7+0.3*(expV/14000)));
+      const xl=round5(base*scale*0.85), xh=round5(base*scale*1.2);
+      items.push("לחופשת לידה של <b>"+lv+"</b> תצטרכו בערך <b>"+fmt(xl)+"–"+fmt(xh)+" ₪</b> בצד. הטווח משתנה לפי ההכנסה שלכם, והמספר המדויק במדריך.");
+    } else {
+      items.push("רציתם חופשת לידה של <b>"+lv+"</b>, ודמי הלידה מכסים רק 8-15 שבועות. את השאר צריך להכין מראש.");
+    }
   }
 
   const fndA = answers.funding;
-  const cc = answers.costcalc ? answers.costcalc.label : "";
-  let fp = "";
   if(fndA && fndA.val<=1){
-    fp += "לפי מה שעניתם, <span class='hl'>אין לכם עדיין חיסכון או קופה ייעודית</span> ללידה ולתינוק. ";
-    if(fndA.label==="נסמוך על עזרה מההורים או מתנות") fp += "אתם בונים בעיקר על מתנות ועזרה מההורים, וזה לא משהו יציב להישען עליו. ";
+    let t = "<span class='hl'>אין לכם עדיין חיסכון ייעודי</span> ללידה ולתינוק.";
+    if(fndA.label==="נסמוך על עזרה מההורים או מתנות") t += " אתם בונים על מתנות ועזרה, וזה לא יציב.";
+    items.push(t);
   }
-  if(cc==="לא, עוד לא חישבנו" || cc==="ניחשנו בגדול") fp += "וחשוב לזכור, עדיין אין לכם תמונה מדויקת של כמה תצטרכו לקניות ולשנה הראשונה. ";
-  if(fp) p += "<br><br>"+fp;
+
+  const cc = answers.costcalc ? answers.costcalc.label : "";
+  if(cc==="לא, עוד לא חישבנו" || cc==="ניחשנו בגדול") items.push("עדיין אין לכם תמונה מדויקת של כמה תינוק באמת עולה.");
 
   const insA = answers.insure;
+  if(insA && insA.val===0) items.push("אין לכם ביטוחים פרטיים מסודרים, וכדאי לסדר לפני ההיריון.");
+  else if(insA && insA.val===1) items.push("כנראה אתם לא מנצלים ביטוחים שכבר יש לכם, ששווים לכם כסף.");
+
   const cfA = answers.childfuture;
-  let vp = "";
-  if(insA && insA.val===0) vp += "כרגע אין לכם ביטוחים פרטיים מסודרים, ומומלץ לסדר אותם עוד לפני ההיריון (לחלקם יש תקופת אכשרה). ";
-  else if(insA && insA.val===1) vp += "וכנראה אתם גם <span class='hl'>לא מודעים לביטוחים שכבר יש לכם</span>, שיכולים להיות שווים לכם המון כסף. ";
-  if(cfA && cfA.val<=2) vp += "ועדיין לא תכננתם איך לבנות לתינוק עתיד כלכלי. כשהוא ייוולד, בשילוב של 'חיסכון לכל ילד' וחיסכון חיצוני נוסף, אפשר לבנות לו <b>כ-200,000 ₪ עד גיל 21</b> עם לא הרבה מאמץ, אבל כדאי לדעת כבר עכשיו איך ובאילו מסלולים, כדי להתחיל נכון מהיום הראשון. ";
-  const rz=answers.raise;
-  if(rz && rz.val<=1) vp += "ורציתם שלא יחסר לו כלום, וזה מובן לגמרי. אבל ילד שמקבל הכל לא לומד להעריך, לא מפתח יכולת לדחות סיפוקים, ולא רוכש כלים לנהל כסף בעצמו. ";
-  else if(rz && rz.val>=2) vp += "רציתם שהילד/ה יידע להעריך ולנהל כסף בעצמו, וזו בדיוק המתנה הכי חשובה שאפשר לתת. רק שתדעו, ילד לומד כסף בעיקר <b>מההורים שלו, בדוגמה אישית</b>. כדי להעביר לו את הערך הזה, קודם אתם צריכים לדעת להתנהל כלכלית בעצמכם. ";
-  if(vp) p += "<br><br>"+vp;
+  if(cfA && cfA.val<=2) items.push("אפשר לבנות לתינוק <b>כ-200,000 ₪ עד גיל 21</b> מהשקעה חודשית קטנה. איך, במדריך.");
+
+  const rz = answers.raise;
+  if(rz && rz.val<=1) items.push("רציתם שלא יחסר לו כלום, אבל ילד שמקבל הכל לא לומד להעריך כסף.");
+  else if(rz && rz.val>=2) items.push("כדי שהילד יעריך וידע לנהל כסף, <b>קודם אתם צריכים לדעת להתנהל בעצמכם</b>. ילד לומד בדוגמה אישית.");
 
   const st = answers.setup ? answers.setup.label : "";
   const cpA = answers.couple;
-  let cp = "";
-  if(st==="בעיקר אחד מאיתנו מנהל את הכל") cp += "כרגע בעיקר אחד מכם מנהל את הכסף. ";
-  else if(st==="כל אחד מנהל את שלו, פחות מודעים") cp += "כרגע כל אחד מכם מנהל את שלו בנפרד. ";
-  if(cpA && cpA.val<=2) cp += (cp?"וגם ":"") + "התקשורת שלכם סביב כסף עדיין לא לגמרי עובדת, וכדאי לחזק אותה. ";
-  if(cp) p += "<br><br>"+cp+"ולקראת תינוק חשוב ששניכם תהיו באותו ראש ותראו את התמונה המלאה ביחד. ";
+  if((cpA && cpA.val<=2) || st==="בעיקר אחד מאיתנו מנהל את הכל" || st==="כל אחד מנהל את שלו, פחות מודעים")
+    items.push("התקשורת שלכם סביב כסף עוד לא לגמרי עובדת, וכדאי ששניכם תהיו באותו ראש.");
 
-  {
-    let cush = "ועוד לא דיברנו על <span class='hl'>כרית ביטחון</span> שתגן עליכם אם מי שממשיך לפרנס יאבד את מקום העבודה, או חלילה תאונה או מחלה, דווקא כשההכנסה כבר נמוכה בגלל החופשה";
-    if(expV){ const cl = round5(expV*4), ch = round5(expV*6); cush += ", בערך <b>"+fmt(cl)+"–"+fmt(ch)+" ₪</b>"; }
-    p += "<br><br>"+cush + ". ";
-  }
-  p += "<br><br><b>כמה בדיוק במקרה שלכם, המספר המדויק לפי סגנון החיים שלכם והפער האמיתי, מחכה לכם במדריך.</b>";
-  el('r_personal').innerHTML = p;
+  items.push("ואין לכם כרית ביטחון אם המפרנס יאבד עבודה דווקא בזמן החופשה.");
+
+  let html = "<ul class='insights'>";
+  items.forEach(function(t){ html += "<li>"+t+"</li>"; });
+  html += "</ul>";
+  html += "<div class='tease'>המספר המדויק שלכם, והתוכנית המלאה שלב-אחר-שלב, מחכים לכם במדריך 👇</div>";
+  el('r_personal').innerHTML = html;
 
   const gbox=el('r_gaps_box');
   if(gaps.length){ el('r_gaps').innerHTML = gaps.map(g=>"<li>"+g.t+"</li>").join(""); gbox.classList.remove('hidden'); }
