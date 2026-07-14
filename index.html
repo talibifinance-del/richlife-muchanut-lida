@@ -428,18 +428,45 @@ function showResult(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* קיצור דרך לבדיקה: ?demo=1 קופץ ישר לתוצאה עם נתוני דוגמה */
+/* קיצור בדיקה: ?demo=1..4 קופץ ישר לתוצאה עם פרופיל, ומראה מה נענה */
 (function(){
- try{ if(new URLSearchParams(location.search).has('demo')){
-   answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};
-   answers.leave={label:"שנה"};answers.conduct={label:"מסתדרים, אבל כמעט לא חוסכים",val:2};answers.cushion={label:"פחות מחודש",val:1};
-   answers.costcalc={label:"ניחשנו בגדול",val:1};answers.matpay={label:"אין לי מושג",val:0};
-   answers.funding={label:"נסמוך על עזרה מההורים או מתנות",val:1};answers.insure={label:"לא בטוח/ה מה יש לנו",val:1};
-   answers.rights={label:"שמעתי על כמה",val:1};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};
-   answers.raise={label:"ניתן לו את מה שצריך, עם גבולות",val:2};answers.setup={label:"כל אחד מנהל את שלו, פחות מודעים"};
-   answers.couple={label:"מדברים, אבל בלי להגיע להחלטה",val:2};
-   el('f_name').value="טלי"; el('intro').classList.add('hidden'); showResult();
- }}catch(e){}
+ var d=new URLSearchParams(location.search).get('demo'); if(!d) return;
+ var P={
+  '1':{name:"רמה נמוכה · זוג במינוס, רוצים שנה בבית",fn:function(){
+    answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};
+    answers.leave={label:"שנה"};answers.conduct={label:"בקושי סוגרים, מינוס או הלוואות",val:0};answers.cushion={label:"אין לנו, ממש כלום",val:0};
+    answers.costcalc={label:"לא, עוד לא חישבנו",val:0};answers.matpay={label:"אין לי מושג",val:0};
+    answers.funding={label:"עוד לא חשבנו, נסתדר איכשהו",val:0};answers.insure={label:"אין לנו",val:0};
+    answers.rights={label:"אין לי מושג",val:0};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};
+    answers.raise={label:"שלא יחסר לו כלום, ניתן לו הכל",val:0};answers.setup={label:"בעיקר אחד מאיתנו מנהל את הכל"};answers.couple={label:"מתחמקים, כמעט לא מדברים",val:0};}},
+  '2':{name:"רמה בינונית · יש בסיס אבל חסר",fn:function(){
+    answers.time={label:"עוד שנה־שנתיים"};answers.income={label:"18,000",val:18000};answers.expense={label:"15,000",val:15000};
+    answers.leave={label:"כחצי שנה"};answers.conduct={label:"מסתדרים, אבל כמעט לא חוסכים",val:2};answers.cushion={label:"1–3 חודשים",val:2};
+    answers.costcalc={label:"יש לנו הערכה לא רעה",val:2};answers.matpay={label:"יש לי הערכה גסה",val:1};
+    answers.funding={label:"יש לנו קצת חיסכון בצד",val:2};answers.insure={label:"חלקית",val:2};
+    answers.rights={label:"שמעתי על כמה",val:1};answers.childfuture={label:"שמענו על 'חיסכון לכל ילד'",val:1};
+    answers.raise={label:"ניתן לו את מה שצריך, עם גבולות",val:2};answers.setup={label:"חשבון משותף למשק בית + חשבון אישי לכל אחד"};answers.couple={label:"מדברים, אבל בלי להגיע להחלטה",val:2};}},
+  '3':{name:"מוכנים ומוגנים · רמה גבוהה",fn:function(){
+    answers.time={label:"בשנה הקרובה"};answers.income={label:"25,000",val:25000};answers.expense={label:"14,000",val:14000};
+    answers.leave={label:"כחצי שנה"};answers.conduct={label:"בשליטה, חוסכים בקביעות",val:3};answers.cushion={label:"חצי שנה ומעלה",val:3};
+    answers.costcalc={label:"כן, ישבנו וחישבנו",val:3};answers.matpay={label:"בדקתי, יודעת בדיוק",val:3};
+    answers.funding={label:"בונים חיסכון ייעודי לזה",val:3};answers.insure={label:"כן, מסודר ומעודכן",val:3};
+    answers.rights={label:"מכיר/ה, ואדע לממש",val:3};answers.childfuture={label:"כבר יודעים בדיוק איך נבנה לו עתיד",val:3};
+    answers.raise={label:"שידע להעריך ולנהל כסף בעצמו, חינוך פיננסי אמיתי",val:3};answers.setup={label:"חשבון משותף, ומודעים לכל הוצאה אחד של השני"};answers.couple={label:"מדברים בפתיחות ומחליטים ביחד",val:3};}},
+  '4':{name:"לא יודעים כמה מוציאים",fn:function(){
+    answers.time={label:"בשנה הקרובה"};answers.income={label:"16,000",val:16000};answers.expense={label:"לא יודע/ת",val:null,unknown:true};
+    answers.leave={label:"שנה"};answers.conduct={label:"לפעמים במינוס, לא יציב",val:1};answers.cushion={label:"פחות מחודש",val:1};
+    answers.costcalc={label:"לא, עוד לא חישבנו",val:0};answers.matpay={label:"אין לי מושג",val:0};
+    answers.funding={label:"נסמוך על עזרה מההורים או מתנות",val:1};answers.insure={label:"לא בטוח/ה מה יש לנו",val:1};
+    answers.rights={label:"אין לי מושג",val:0};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};
+    answers.raise={label:"ניתן לו הרבה, גם על חשבוננו",val:1};answers.setup={label:"כל אחד מנהל את שלו, פחות מודעים"};answers.couple={label:"מדברים, אבל זה מתפוצץ לוויכוח",val:1};}}
+ };
+ var prof=P[d]||P['1'];
+ try{ prof.fn(); el('f_name').value="טלי"; el('intro').classList.add('hidden'); showResult();
+   var rows=""; QS.forEach(function(Q){ if(answers[Q.key]) rows+="<div>• "+Q.q+" <b>"+answers[Q.key].label+"</b></div>"; });
+   var banner='<div style="background:#fff7e0;border:1px solid #e0c98a;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:#5f5220;line-height:1.6"><b>🔧 מצב בדיקה · פרופיל '+d+': '+prof.name+'</b><div style="margin-top:6px">'+rows+'</div></div>';
+   el('result').insertAdjacentHTML('afterbegin', banner);
+ }catch(e){}
 })();
 </script>
 </body>
