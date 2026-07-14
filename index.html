@@ -69,7 +69,12 @@
   .field input{width:100%;padding:14px 15px;border:1.5px solid var(--line);border-radius:12px;
     font-size:16px;font-family:inherit;background:#fff}
   .field input:focus{outline:none;border-color:var(--green)}
-  .fineprint{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+  .fineprint{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+  .ferr{display:none;color:#c1553f;font-size:13px;font-weight:600;margin-top:5px}
+  .ferr.show{display:block}
+  .check{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:14px;color:var(--muted);cursor:pointer;line-height:1.55}
+  .check input{margin-top:2px;width:18px;height:18px;flex:0 0 auto;accent-color:var(--green);cursor:pointer}
+  .check a{color:var(--green);font-weight:700;text-decoration:underline}
   .badge{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:15px;
     padding:8px 16px;border-radius:30px;margin-bottom:16px}
   .rmeter{height:12px;background:#ece6da;border-radius:20px;overflow:hidden;margin:6px 0 22px}
@@ -143,12 +148,14 @@
       <h1 style="font-size:23px">לאן לשלוח את התוצאה האישית שלכם?</h1>
       <p class="lead">מכינים לכם עכשיו קריאה אישית של רמת המוכנות והפערים. נשאיר פרטים ונראה אותה מיד.</p>
       <div class="field"><label>שם</label><input id="f_name" type="text" placeholder="איך קוראים לך?"></div>
-      <div class="field"><label>טלפון</label><input id="f_phone" type="tel" placeholder="050-0000000"></div>
-      <div class="field"><label>אימייל</label><input id="f_email" type="email" placeholder="you@email.com"></div>
-      <div class="center" style="margin-top:18px">
-        <button class="btn btn-primary" id="showres" onclick="showResult()">הראו לי את התוצאה שלי</button>
+      <div class="field"><label>טלפון</label><input id="f_phone" type="tel" inputmode="tel" placeholder="050-0000000"><div class="ferr" id="e_phone">מספר טלפון לא תקין (למשל 050-1234567)</div></div>
+      <div class="field"><label>אימייל</label><input id="f_email" type="email" inputmode="email" placeholder="you@email.com"><div class="ferr" id="e_email">כתובת אימייל לא תקינה</div></div>
+      <label class="check"><input type="checkbox" id="f_consent"><span>אני מאשר/ת קבלת דיוור, תכנים ועדכונים מ-RichLife.</span></label>
+      <label class="check"><input type="checkbox" id="f_terms"><span>קראתי ואני מסכים/ה ל<a href="TERMS_URL" target="_blank" rel="noopener">תקנון</a> ול<a href="PRIVACY_URL" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</span></label>
+      <div class="center" style="margin-top:20px">
+        <button class="btn btn-primary" id="showres" onclick="showResult()" disabled>הראו לי את התוצאה שלי</button>
       </div>
-      <p class="fineprint">הפרטים נשמרים אצל טלי בלבד, בשביל לשלוח לך את התוצאה והמדריך. בלי ספאם.</p>
+      <p class="fineprint">הפרטים נשמרים אצל טלי בלבד, לשליחת התוצאה והמדריך. בלי ספאם.</p>
     </section>
 
     <section id="result" class="hidden">
@@ -280,6 +287,17 @@ function next(){
   else { el('quiz').classList.add('hidden'); el('form').classList.remove('hidden'); setBar(88); }
 }
 function back(){ if(idx>0){ idx--; render(); } }
+function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function validPhone(v){ return /^0\d{8,9}$/.test(v.replace(/[-\s]/g,'')); }
+function checkForm(){
+  var nm=el('f_name').value.trim(), em=el('f_email').value.trim(), ph=el('f_phone').value.trim();
+  var okE=validEmail(em), okP=validPhone(ph);
+  el('e_email').classList.toggle('show', em.length>0 && !okE);
+  el('e_phone').classList.toggle('show', ph.length>0 && !okP);
+  el('showres').disabled = !(nm.length>1 && okE && okP && el('f_consent').checked && el('f_terms').checked);
+}
+['f_name','f_email','f_phone'].forEach(function(id){ el(id).addEventListener('input',checkForm); });
+['f_consent','f_terms'].forEach(function(id){ el(id).addEventListener('change',checkForm); });
 
 function showResult(){
   const lead = { name:el('f_name').value, phone:el('f_phone').value, email:el('f_email').value };
