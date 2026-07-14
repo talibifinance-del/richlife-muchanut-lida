@@ -81,7 +81,8 @@
   .gaps{background:#fbf7ee;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
   .gaps h3{margin:0 0 10px;font-size:15px;color:var(--brass-dark)}
   .gaps ul{margin:0;padding-inline-start:20px}
-  .gaps li{margin-bottom:6px}
+  .gaps li{margin-bottom:10px;line-height:1.55}
+  .gaps .rec{color:#3e7c5a;font-weight:600}
   .gaps .hl{color:#c1553f;font-weight:800}
   .personal .hl{color:#c1553f;font-weight:800}
   .insights{list-style:none;padding:0;margin:0;display:grid;gap:11px}
@@ -199,7 +200,7 @@ const QS = [
   { key:"matpay", bg:true, gap:"<span class='hl'>לא בררתם</span> כמה תקבלו בחופשת הלידה", q:"את יודעת כמה תקבלי בחופשת הלידה? (דמי לידה מביטוח לאומי)",
     a:[["אין לי מושג",0],["יש לי הערכה גסה",1],["אני יודעת בערך",2],["בדקתי, יודעת בדיוק",3]] },
 
-  { key:"funding", bg:true, gap:"<span class='hl'>אין לכם עדיין תוכנית</span> איך לממן את הלידה וחופשת הלידה", q:"איך אתם מתכננים לממן את הלידה, הקניות וחופשת הלידה?",
+  { key:"funding", bg:true, gap:"<span class='hl'>אין לכם עדיין תוכנית</span> איך לממן את הרכישות, הלידה וחופשת הלידה", q:"איך אתם מתכננים לממן את הלידה, הקניות וחופשת הלידה?",
     a:[["עוד לא חשבנו, נסתדר איכשהו",0],["נסמוך על עזרה מההורים או מתנות",1],["יש לנו קצת חיסכון בצד",2],["בונים חיסכון ייעודי לזה",3]] },
 
   { key:"insure", bg:true, gap:"<span class='hl'>אין כיסוי ביטוחי מסודר</span>, וכדאי לסדר אותו לפני ההיריון", q:"יש לכם ביטוחים פרטיים מסודרים? (בריאות / אובדן כושר עבודה)",
@@ -283,14 +284,26 @@ function back(){ if(idx>0){ idx--; render(); } }
 function showResult(){
   const lead = { name:el('f_name').value, phone:el('f_phone').value, email:el('f_email').value };
   let score=0; let gaps=[];
+  const REC={
+    conduct:"כי אתם מוציאים יותר ממה שנכנס, וכדאי לייצב לפני שהתינוק מוסיף הוצאה.",
+    cushion:"למקרה שההכנסה נפגעת, כדי שלא תיכנסו ללחץ בדיוק בתקופה הכי רגישה.",
+    costcalc:"כדי שלא תופתעו מהמספרים תוך כדי.",
+    matpay:"כדי לדעת בדיוק על כמה אתם עומדים בחופשה.",
+    funding:"מומלץ להתחיל לבנות אותה, כדי שלא תיכנסו לגירעון ותוכלו להיות עם התינוק/ת כמו שרציתם.",
+    insure:"כדאי לסדר לפני ההיריון, כדי לנצל את כל הביטוחים ולחסוך כסף.",
+    rights:"כדאי למצות כל שקל, זה כסף שנשאר על הרצפה.",
+    childfuture:"כדי שתהיה לו נקודת פתיחה טובה בגיל 20.",
+    raise:"והכל מתחיל מכם, ילד לומד כסף בדוגמה אישית.",
+    couple:"ובשביל שהילד יגדל עם חינוך פיננסי טוב, כדאי לסדר, אתם הדוגמה שלו."
+  };
   QS.forEach(Q=>{
     if(Q.type==="ctx"||Q.type==="num") return;
     const a=answers[Q.key]; if(!a) return;
     score+=a.val;
-    if(a.val<=1 && Q.gap) gaps.push({t:Q.gap, bg:!!Q.bg});
+    if(a.val<=1 && Q.gap) gaps.push({t:Q.gap, rec:REC[Q.key], bg:!!Q.bg});
   });
   const expUnknown = answers.expense && answers.expense.unknown;
-  if(expUnknown) gaps.unshift({t:"<span class='hl'>עוד לא יודעים</span> כמה אתם מוציאים בחודש", bg:false});
+  if(expUnknown) gaps.unshift({t:"<span class='hl'>עוד לא יודעים</span> כמה אתם מוציאים בחודש", rec:"בלי לדעת את הבסיס אי אפשר לתכנן, זה הצעד הראשון.", bg:false});
   gaps.sort((a,b)=> (a.bg===b.bg?0:(a.bg?-1:1)));
   const pct = Math.round((score/MAX)*100);
 
@@ -372,7 +385,7 @@ function showResult(){
   if((cpA && cpA.val<=2) || st==="בעיקר אחד מאיתנו מנהל את הכל" || st==="כל אחד מנהל את שלו, פחות מודעים")
     items.push("התקשורת שלכם סביב כסף עוד לא לגמרי עובדת, ותינוק רק מגביר את הלחץ הזה. חשוב ששניכם תהיו באותו ראש לפני.");
 
-  items.push("ומעל הכל, אין לכם כרית ביטחון אם המפרנס יאבד עבודה, חלילה, דווקא כשההכנסה כבר נמוכה בגלל החופשה.");
+  items.push("ומעל הכל, אין לכם כרית ביטחון אם המפרנס יאבד עבודה, חלילה, דווקא כשההכנסה כבר נמוכה בגלל החופשה. כרית כזו היא בערך <b>3 עד 6 חודשי מחיה</b> (תלוי בכמה המפרנס מרוויח).");
 
     let html = "<ul class='insights'>";
   items.forEach(function(t){ html += "<li>"+t+"</li>"; });
@@ -381,7 +394,7 @@ function showResult(){
   el('r_personal').innerHTML = html;
 
   const gbox=el('r_gaps_box');
-  if(gaps.length){ el('r_gaps').innerHTML = gaps.map(g=>"<li>"+g.t+"</li>").join(""); gbox.classList.remove('hidden'); }
+  if(gaps.length){ el('r_gaps').innerHTML = gaps.map(g=>"<li>"+g.t+(g.rec?" <span class='rec'>"+g.rec+"</span>":"")+"</li>").join(""); gbox.classList.remove('hidden'); }
   else { gbox.classList.add('hidden'); }
 
   let urg="";
