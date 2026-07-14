@@ -179,6 +179,34 @@
 const GUIDE_URL = "#";
 const CALL_URL  = "https://richlife.ravpage.co.il/service1one1";
 
+/* איסוף התשובות ל-Google Sheet דרך ה-Worker (form-capture).
+   עד לפריסה - השאירו "". כשה-Worker חי, הדביקו כאן את הכתובת המלאה
+   (למשל https://muchanut-quiz.<subdomain>.workers.dev). ריק = לא שולח, הקוויז עובד רגיל. */
+const WORKER_URL = "https://muchanut-quiz.tali-bi-finance.workers.dev";
+function captureLead(lead, answers, tier, score, pct){
+  if(!WORKER_URL) return;                 // לא נפרס עדיין - דילוג שקט
+  var qp = new URLSearchParams(location.search);
+  if(qp.has('demo') || qp.has('form')) return;   // מצב בדיקה - לא לזהם את ה-Sheet
+  var payload = {
+    name: lead.name || "",
+    phone: lead.phone || "",
+    email: lead.email || "",
+    consent: (el('f_consent') && el('f_consent').checked) ? "כן" : "לא",
+    tier: tier.n + " - " + tier.name,
+    score: String(score),
+    readiness_pct: pct + "%"
+  };
+  QS.forEach(function(Q){ payload[Q.key] = (answers[Q.key] && answers[Q.key].label) ? answers[Q.key].label : ""; });
+  try {
+    fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      keepalive: true                     // שורד ניווט לעמוד התוצאה
+    }).catch(function(){});
+  } catch(e){}
+}
+
 const QS = [
   { key:"time", type:"ctx", q:"מתי הייתם רוצים להיכנס להריון?",
     a:["בשנה הקרובה","עוד שנה־שנתיים","בעוד 3 שנים או יותר","עדיין לא בטוחים"] },
@@ -445,6 +473,8 @@ function showResult(){
         '<a href="'+CALL_URL+'">לשיחת התאמה ללא עלות ←</a>';
   }
   el('r_cta').innerHTML = cta;
+
+  captureLead(lead, answers, tier, score, pct);   // שמירת התשובות ל-Google Sheet
 
   el('form').classList.add('hidden');
   el('result').classList.remove('hidden');
