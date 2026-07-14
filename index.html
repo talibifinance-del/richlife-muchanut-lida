@@ -318,6 +318,7 @@ function showResult(){
   const incV = (answers.income && !answers.income.unknown) ? answers.income.val : null;
   const expV = (answers.expense && !answers.expense.unknown) ? answers.expense.val : null;
   const lv  = answers.leave ? answers.leave.label : "";
+  const tm  = answers.time ? answers.time.label : "";
   const surplus = (incV!=null && expV!=null) ? incV-expV : null;
   const items = [];
 
