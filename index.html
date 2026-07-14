@@ -93,6 +93,14 @@
   .cta a:hover{background:#dbe8de}
   .hidden{display:none}
   .center{text-align:center}
+  .lead2{font-weight:700;color:var(--ink);font-size:17px;margin:14px 0 12px}
+  .introlist{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:10px}
+  .introlist li{display:flex;align-items:center;gap:10px;background:var(--green-soft);
+    border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15.5px;font-weight:600;color:var(--ink)}
+  .introlist li span{font-size:18px}
+  .costinfo{background:#fdf9f0;border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+    margin:0 0 18px;font-size:14.5px;color:var(--ink);line-height:1.75}
+  .costinfo b{color:var(--brass-dark)}
 </style>
 
 <div class="wrap">
@@ -103,7 +111,13 @@
     <section id="intro">
       <div class="step-kicker">שאלון קצר · כ־3 דקות</div>
       <h1>כמה אתם באמת מוכנים כלכלית להביא תינוק?</h1>
-      <p class="lead">רוב הזוגות נכנסים להריון ומגלים את המספרים תוך כדי, בלחץ. עונים על כמה שאלות פשוטות, ומקבלים תמונה אישית של איפה אתם עומדים, מה הפערים, וכמה בערך צריך להיות בצד לפני.</p>
+      <p class="lead">רוב הזוגות נכנסים להריון ומגלים את המספרים תוך כדי, בלחץ.</p>
+      <p class="lead2">עונים על כמה שאלות פשוטות, ומקבלים תמונה אישית:</p>
+      <ul class="introlist">
+        <li><span>📍</span> איפה אתם עומדים היום</li>
+        <li><span>🔍</span> מה הפערים שהכי חשוב לסגור</li>
+        <li><span>💰</span> כמה בערך צריך להיות בצד לפני</li>
+      </ul>
       <div class="center"><button class="btn btn-primary" onclick="start()">מתחילים →</button></div>
     </section>
 
@@ -135,6 +149,7 @@
       <span class="badge" id="r_badge"></span>
       <div class="rmeter"><i id="r_meter"></i></div>
       <p class="read" id="r_read"></p>
+      <div class="costinfo" id="r_costinfo">רק שתדעו: תינוק בשנה הראשונה עולה בדרך כלל <b>בין 20,000 ל-40,000 ₪</b> (חיתולים, תרופות, ציוד וביגוד). ואם מתכננים מעון מגיל חצי שנה, צריך להיערך לזה מראש, מעון עולה <b>3,500 עד 5,500 ₪ בחודש</b>.</div>
       <div class="personal" id="r_personal"></div>
       <div class="gaps" id="r_gaps_box">
         <h3>מה חסר ומעכב אתכם:</h3>
@@ -192,6 +207,9 @@ const QS = [
   { key:"childfuture", bg:true, gap:"<span class='hl'>עוד לא תכננתם</span> איך לבנות לתינוק עתיד כלכלי", q:"חשבתם איך לדאוג לתינוק לעתיד כלכלי טוב יותר?",
     hint:"חיסכון או השקעה עבורו כבר מהיום הראשון",
     a:[["עוד לא חשבנו על זה",0],["שמענו על 'חיסכון לכל ילד'",1],["מתכננים לפתוח חיסכון/השקעה עבורו",2],["כבר יודעים בדיוק איך נבנה לו עתיד",3]] },
+
+  { key:"raise", bg:true, gap:"<span class='hl'>עוד לא חשבתם על חינוך פיננסי</span> לילד, רק על לתת לו", q:"איך הייתם רוצים לגדל את הילד/ה מבחינה כלכלית?",
+    a:[["שלא יחסר לו כלום, ניתן לו הכל",0],["ניתן לו הרבה, גם על חשבוננו",1],["ניתן לו את מה שצריך, עם גבולות",2],["בסיס + חינוך פיננסי, שידע להעריך ולנהל בעצמו",3]] },
 
   { key:"setup", type:"ctx", q:"איך אתם מנהלים את הכסף כזוג?",
     a:["חשבון משותף, ומודעים לכל הוצאה אחד של השני","חשבון משותף למשק בית + חשבון אישי לכל אחד","כל אחד מנהל את שלו, פחות מודעים","בעיקר אחד מאיתנו מנהל את הכל"] },
@@ -272,9 +290,9 @@ function showResult(){
   const pct = Math.round((score/MAX)*100);
 
   let tier;
-  if(score<=9)       tier={n:1,name:"רק בתחילת הדרך",emoji:"🔴",color:"var(--r1)"};
-  else if(score<=16) tier={n:2,name:"יש בסיס, אבל חסר עוד הרבה",emoji:"🟠",color:"var(--r2)"};
-  else if(score<=22) tier={n:3,name:"קרובים מאוד",emoji:"🟡",color:"var(--r3)"};
+  if(score<=10)      tier={n:1,name:"רק בתחילת הדרך",emoji:"🔴",color:"var(--r1)"};
+  else if(score<=18) tier={n:2,name:"יש בסיס, אבל חסר עוד הרבה",emoji:"🟠",color:"var(--r2)"};
+  else if(score<=24) tier={n:3,name:"קרובים מאוד",emoji:"🟡",color:"var(--r3)"};
   else               tier={n:4,name:"מוכנים ומוגנים",emoji:"🟢",color:"var(--r4)"};
 
   const READ = {
@@ -341,6 +359,8 @@ function showResult(){
   if(insA && insA.val===0) vp += "כרגע אין לכם ביטוחים פרטיים מסודרים, ומומלץ לסדר אותם עוד לפני ההיריון (לחלקם יש תקופת אכשרה). ";
   else if(insA && insA.val===1) vp += "וכנראה אתם גם <span class='hl'>לא מודעים לביטוחים שכבר יש לכם</span>, שיכולים להיות שווים לכם המון כסף. ";
   if(cfA && cfA.val<=2) vp += "ועדיין לא תכננתם איך לבנות לתינוק עתיד כלכלי. כשהוא ייוולד, בשילוב של 'חיסכון לכל ילד' וחיסכון חיצוני נוסף, אפשר לבנות לו <b>כ-200,000 ₪ עד גיל 21</b> עם לא הרבה מאמץ, אבל כדאי לדעת כבר עכשיו איך ובאילו מסלולים, כדי להתחיל נכון מהיום הראשון. ";
+  const rz=answers.raise;
+  if(rz && rz.val<=1) vp += "ורציתם שלא יחסר לו כלום, וזה מובן לגמרי. אבל ילד שמקבל הכל לא לומד להעריך, לא מפתח יכולת לדחות סיפוקים, ולא רוכש כלים לנהל כסף בעצמו. המתנה הכי גדולה היא לא לתת לו הכל, אלא לתת לו בסיס איתן וחינוך פיננסי. ";
   if(vp) p += "<br><br>"+vp;
 
   const st = answers.setup ? answers.setup.label : "";
