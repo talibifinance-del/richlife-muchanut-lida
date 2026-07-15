@@ -143,7 +143,7 @@
 <div class="wrap">
   <div class="brand"><span class="dot"></span> RichLife · טלי בנימינוב</div>
   <div class="card">
-    <div class="progress"><i id="bar"></i></div>
+    <div class="progress" id="progbar"><i id="bar"></i></div>
 
     <section id="intro">
       <div class="step-kicker">שאלון קצר · כ־3 דקות</div>
@@ -365,12 +365,12 @@ function render(){
   el('back').style.visibility = idx===0 ? 'hidden':'visible';
   el('next').disabled = !answers[Q.key];
   el('next').textContent = idx===QS.length-1 ? "לתוצאה ←" : "הבא ←";
-  setBar( Math.round(((idx+1)/QS.length)*84) );
+  setBar( Math.round(((idx+1)/QS.length)*100) );
 }
 function next(){
   if(!answers[QS[idx].key]) return;
   if(idx < QS.length-1){ idx++; render(); }
-  else { el('quiz').classList.add('hidden'); el('form').classList.remove('hidden'); setBar(88); }
+  else { el('quiz').classList.add('hidden'); el('form').classList.remove('hidden'); el('progbar').classList.add('hidden'); }
 }
 function back(){ if(idx>0){ idx--; render(); } }
 function toggleMulti(key,label){
@@ -560,7 +560,7 @@ function showResult(){
 /* קיצור בדיקה: ?demo=1..4 קופץ ישר לתוצאה עם פרופיל, ומראה מה נענה */
 (function(){
  var qp=new URLSearchParams(location.search);
- if(qp.has('form')){ try{ answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};answers.leave={label:"שנה"};answers.conduct={label:"מסתדרים",val:2};answers.cushion={label:"פחות מחודש",val:1};answers.costcalc={label:"ניחשנו בגדול",val:1};answers.matpay={label:"אין לי מושג",val:0};answers.funding={label:"נסמוך על עזרה מההורים או מתנות",val:1};answers.insure={label:"לא בטוח/ה מה יש לנו",val:1};answers.rights={label:"שמעתי על כמה",val:1};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};answers.raise={label:"עם גבולות",val:2};answers.setup={label:"כל אחד מנהל את שלו",};answers.couple={label:"בלי החלטה",val:2}; el('intro').classList.add('hidden'); el('form').classList.remove('hidden'); }catch(e){} return; }
+ if(qp.has('form')){ try{ answers.time={label:"בשנה הקרובה"};answers.income={label:"15,000",val:15000};answers.expense={label:"17,000",val:17000};answers.leave={label:"שנה"};answers.conduct={label:"מסתדרים",val:2};answers.cushion={label:"פחות מחודש",val:1};answers.costcalc={label:"ניחשנו בגדול",val:1};answers.matpay={label:"אין לי מושג",val:0};answers.funding={label:"נסמוך על עזרה מההורים או מתנות",val:1};answers.insure={label:"לא בטוח/ה מה יש לנו",val:1};answers.rights={label:"שמעתי על כמה",val:1};answers.childfuture={label:"עוד לא חשבנו על זה",val:0};answers.raise={label:"עם גבולות",val:2};answers.setup={label:"כל אחד מנהל את שלו",};answers.couple={label:"בלי החלטה",val:2}; el('intro').classList.add('hidden'); el('form').classList.remove('hidden'); el('progbar').classList.add('hidden'); }catch(e){} return; }
  var d=qp.get('demo'); if(!d) return;
  var P={
   '1':{name:"רמה נמוכה · זוג במינוס, רוצים שנה בבית",fn:function(){
