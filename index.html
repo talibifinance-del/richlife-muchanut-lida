@@ -117,6 +117,11 @@
   .hidden{display:none}
   .center{text-align:center}
   .lead2{font-weight:700;color:var(--ink);font-size:17px;margin:14px 0 12px}
+  .intro-copy{font-size:16px;color:var(--ink);line-height:1.75;margin:0 0 6px}
+  .intro-copy p{margin:0 0 13px}
+  .intro-copy b{color:var(--green);font-weight:700}
+  .intro-punch{font-weight:800;font-size:17.5px;color:var(--green);border-inline-start:4px solid var(--brass);
+    background:#fdf9f0;padding:12px 15px;border-radius:10px;margin-top:16px !important}
   .introlist{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:10px}
   .introlist li{display:flex;align-items:center;gap:10px;background:var(--green-soft);
     border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15.5px;font-weight:600;color:var(--ink)}
@@ -136,15 +141,20 @@
 
     <section id="intro">
       <div class="step-kicker">שאלון קצר · כ־3 דקות</div>
-      <h1>כמה אתם באמת מוכנים כלכלית להביא תינוק?</h1>
-      <p class="lead">רוב הזוגות נכנסים להריון ומגלים את המספרים תוך כדי, בלחץ.</p>
+      <h1>האם אתם מוכנים כלכלית לגדל ילד?</h1>
+      <div class="intro-copy">
+        <p>ילד זה דבר מדהים ומשמח. ובמקביל, זו התחייבות של שנים, והוצאה שמגיעה ל<b>מעל מיליון שקל עד גיל 18</b>.</p>
+        <p>סורי, אבל אתם יודעים ש<b>אהבה לא תחליף מטרנה או גן ילדים תקין</b>.</p>
+        <p>אפשר להיות ההורה הכי אוהב בעולם, אבל כשאין יציבות כלכלית וכל חודש נגמר בלחץ, כל הבית מרגיש את זה.</p>
+        <p class="intro-punch">לפני שמביאים ילד לעולם, צריך לבנות גם את עצמכם.</p>
+      </div>
       <p class="lead2">עונים על כמה שאלות פשוטות, ומקבלים תמונה אישית:</p>
       <ul class="introlist">
         <li><span>📍</span> איפה אתם עומדים היום</li>
         <li><span>🔍</span> מה הפערים שהכי חשוב לסגור</li>
         <li><span>💰</span> כמה בערך צריך להיות בצד לפני</li>
       </ul>
-      <div class="center"><button class="btn btn-primary" onclick="start()">מתחילים →</button></div>
+      <div class="center"><button class="btn btn-primary" onclick="start()">מתחילים ←</button></div>
     </section>
 
     <section id="quiz" class="hidden">
