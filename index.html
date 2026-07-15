@@ -90,8 +90,10 @@
   .personal b{color:var(--green)}
   .gaps{background:#fbf7ee;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 20px}
   .gaps h3{margin:0 0 10px;font-size:15px;color:var(--brass-dark)}
-  .gaps ul{margin:0;padding-inline-start:20px}
-  .gaps li{margin-bottom:10px;line-height:1.55}
+  .gaps ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+  .gaps li{display:flex;gap:10px;align-items:flex-start;line-height:1.55}
+  .gaps .ic{font-size:19px;line-height:1.3;flex:0 0 auto}
+  .gaps .tx{flex:1;min-width:0}
   .gaps .rec{color:#3e7c5a;font-weight:600}
   .gaps .hl{color:#c1553f;font-weight:800}
   .personal .hl{color:#c1553f;font-weight:800}
@@ -373,14 +375,15 @@ function showResult(){
     raise:"והכל מתחיל מכם, ילד לומד כסף בדוגמה אישית.",
     couple:"ובשביל שהילד יגדל עם חינוך פיננסי טוב, כדאי לסדר, אתם הדוגמה שלו."
   };
+  const GAPIC={conduct:"📊",cushion:"🛟",costcalc:"🛒",matpay:"📄",funding:"🐷",insure:"🛡️",rights:"🎁",childfuture:"📈",raise:"🎓",couple:"💬"};
   QS.forEach(Q=>{
     if(Q.type==="ctx"||Q.type==="num"||Q.type==="multi") return;
     const a=answers[Q.key]; if(!a) return;
     score+=a.val;
-    if(a.val<=1 && Q.gap) gaps.push({t:Q.gap, rec:REC[Q.key], bg:!!Q.bg});
+    if(a.val<=1 && Q.gap) gaps.push({t:Q.gap, rec:REC[Q.key], bg:!!Q.bg, e:GAPIC[Q.key]||"🔹"});
   });
   const expUnknown = answers.expense && answers.expense.unknown;
-  if(expUnknown) gaps.unshift({t:"<span class='hl'>עוד לא יודעים</span> כמה אתם מוציאים בחודש", rec:"בלי לדעת את הבסיס אי אפשר לתכנן, זה הצעד הראשון.", bg:false});
+  if(expUnknown) gaps.unshift({t:"<span class='hl'>עוד לא יודעים</span> כמה אתם מוציאים בחודש", rec:"בלי לדעת את הבסיס אי אפשר לתכנן, זה הצעד הראשון.", bg:false, e:"🧮"});
   gaps.sort((a,b)=> (a.bg===b.bg?0:(a.bg?-1:1)));
   const pct = Math.round((score/MAX)*100);
 
@@ -477,7 +480,7 @@ function showResult(){
   el('r_personal').innerHTML = html;
 
   const gbox=el('r_gaps_box');
-  if(gaps.length){ el('r_gaps').innerHTML = gaps.map(g=>"<li>"+g.t+(g.rec?" <span class='rec'>"+g.rec+"</span>":"")+"</li>").join(""); gbox.classList.remove('hidden'); }
+  if(gaps.length){ el('r_gaps').innerHTML = gaps.map(g=>"<li><span class='ic'>"+(g.e||"🔹")+"</span><span class='tx'>"+g.t+(g.rec?" <span class='rec'>"+g.rec+"</span>":"")+"</span></li>").join(""); gbox.classList.remove('hidden'); }
   else { gbox.classList.add('hidden'); }
 
   let urg="";
