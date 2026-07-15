@@ -96,7 +96,9 @@
   .gaps .hl{color:#c1553f;font-weight:800}
   .personal .hl{color:#c1553f;font-weight:800}
   .insights{list-style:none;padding:0;margin:0;display:grid;gap:11px}
-  .insights li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:15px;line-height:1.6;color:var(--ink)}
+  .insights li{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:15px;line-height:1.6;color:var(--ink)}
+  .insights .ic{font-size:22px;line-height:1.3;flex:0 0 auto}
+  .insights .tx{flex:1;min-width:0}
   .insights li b{color:var(--green)}
   .tease{margin-top:16px;background:var(--green);color:#fff;border-radius:14px;padding:15px 16px;font-size:15.5px;font-weight:700;text-align:center;line-height:1.5}
   .urg{border-inline-start:4px solid var(--brass);background:#fdf9f0;padding:12px 16px;
@@ -415,9 +417,9 @@ function showResult(){
     if(surplus < 0) t += "<span class='hl'>כלומר אתם כבר במינוס של "+fmt(-surplus)+" ₪ כל חודש</span>, עוד לפני שיש תינוק, וילד רק מגדיל את ההוצאה. הצעד הראשון, לפני הכל, הוא לבנות תקציב שנשאר בו עודף.";
     else if(surplus < 2000) t += "נשאר לכם רק כ-<b>"+fmt(surplus)+" ₪</b> בחודש, וזה עוד לפני שהתינוק מוסיף הוצאה קבועה. זה מעט מדי כדי להיכנס רגועים.";
     else t += "יש לכם עודף חודשי, וזה בסיס טוב. עכשיו צריך לכוון אותו נכון לקראת התינוק.";
-    items.push(t);
+    items.push({e:(surplus<2000?"📉":"💰"),t:t});
   } else if(expUnknown){
-    items.push("<span class='hl'>אתם עדיין לא יודעים כמה אתם מוציאים בחודש</span>, ובלי לדעת את הבסיס אי אפשר לתכנן כמה צריך לתינוק. זה הדבר הראשון לסדר.");
+    items.push({e:"🧮",t:"<span class='hl'>אתם עדיין לא יודעים כמה אתם מוציאים בחודש</span>, ובלי לדעת את הבסיס אי אפשר לתכנן כמה צריך לתינוק. זה הדבר הראשון לסדר."});
   }
 
   if(lv && lv!=="הבסיס בחוק"){
@@ -429,9 +431,9 @@ function showResult(){
       let t="רציתם חופשת לידה של <b>"+lv+"</b>, אבל דמי הלידה מכסים רק 8-15 שבועות. <span class='hl'>בתקופה הזאת אתם בעצם חיים ממשכורת אחת</span>, ואת כל השאר צריך להכין מראש, בערך <b>"+fmt(xl)+"–"+fmt(xh)+" ₪</b>";
       t += fundLow ? " <span class='hl'>שכרגע לא קיימים אצלכם</span>." : ". טוב שאתם ערוכים לזה.";
       t += " המספר המדויק לפי ההכנסה שלכם מחכה במדריך.";
-      items.push(t);
+      items.push({e:"🍼",t:t});
     } else {
-      items.push("רציתם חופשת לידה של <b>"+lv+"</b>, אבל דמי הלידה מכסים רק 8-15 שבועות, ובתקופה הזאת אתם בעצם חיים ממשכורת אחת. את כל השאר צריך להכין מראש.");
+      items.push({e:"🍼",t:"רציתם חופשת לידה של <b>"+lv+"</b>, אבל דמי הלידה מכסים רק 8-15 שבועות, ובתקופה הזאת אתם בעצם חיים ממשכורת אחת. את כל השאר צריך להכין מראש."});
     }
   }
 
@@ -439,37 +441,37 @@ function showResult(){
   if(fndA && fndA.val<=1){
     let t = "<span class='hl'>אין לכם עדיין חיסכון או קופה ייעודית ללידה</span>. וזה עוד לפני הציוד החד-פעמי, עגלה, מיטה, כיסא בטיחות וכל השאר, שזה בקלות כמה אלפי שקלים.";
     if(fndA.label==="נסמוך על עזרה מההורים או מתנות") t += " אתם בונים בעיקר על מתנות ועזרה מההורים, וזה לא משהו שאפשר להישען עליו בוודאות.";
-    items.push(t);
+    items.push({e:"🐷",t:t});
   }
 
   const cc = answers.costcalc ? answers.costcalc.label : "";
-  if(cc==="לא, עוד לא חישבנו" || cc==="ניחשנו בגדול") items.push("<span class='hl'>עדיין אין לכם תמונה אמיתית של כמה תינוק באמת עולה</span>, ורוב הזוגות מגלים שזה הרבה יותר ממה שחשבו.");
+  if(cc==="לא, עוד לא חישבנו" || cc==="ניחשנו בגדול") items.push({e:"🛒",t:"<span class='hl'>עדיין אין לכם תמונה אמיתית של כמה תינוק באמת עולה</span>, ורוב הזוגות מגלים שזה הרבה יותר ממה שחשבו."});
 
   const insA = answers.insure;
-  if(insA && insA.val===0) items.push("<span class='hl'>אין לכם ביטוחים פרטיים מסודרים</span>, וחלק מהם אפשר לעשות רק לפני ההיריון. אתם מפספסים החזרים והגנה ששווים אלפי שקלים.");
-  else if(insA && insA.val===1) items.push("כנראה אתם לא מנצלים ביטוחים שכבר יש לכם, ומפספסים החזרים ששווים אלפי שקלים. חלק מהם אפשר לעשות רק לפני ההיריון.");
+  if(insA && insA.val===0) items.push({e:"🛡️",t:"<span class='hl'>אין לכם ביטוחים פרטיים מסודרים</span>, וחלק מהם אפשר לעשות רק לפני ההיריון. אתם מפספסים החזרים והגנה ששווים אלפי שקלים."});
+  else if(insA && insA.val===1) items.push({e:"🛡️",t:"כנראה אתם לא מנצלים ביטוחים שכבר יש לכם, ומפספסים החזרים ששווים אלפי שקלים. חלק מהם אפשר לעשות רק לפני ההיריון."});
 
   const rgA = answers.rights;
-  if(rgA && rgA.val<=1) items.push("אתם לא יודעים אילו זכויות והטבות מגיעות לכם, וזה <b>כסף אמיתי שנשאר על הרצפה</b>.");
+  if(rgA && rgA.val<=1) items.push({e:"🎁",t:"אתם לא יודעים אילו זכויות והטבות מגיעות לכם, וזה <b>כסף אמיתי שנשאר על הרצפה</b>."});
 
   const cfA = answers.childfuture;
-  if(cfA && cfA.val<=2) items.push("<span class='hl'>עדיין לא תכננתם איך לבנות לתינוק עתיד</span>. אפשר לבנות לו <b>כ-200,000 ₪ עד גיל 21</b> מהשקעה חודשית קטנה, אבל צריך להתחיל נכון כבר מהיום הראשון.");
+  if(cfA && cfA.val<=2) items.push({e:"📈",t:"<span class='hl'>עדיין לא תכננתם איך לבנות לתינוק עתיד</span>. אפשר לבנות לו <b>כ-200,000 ₪ עד גיל 21</b> מהשקעה חודשית קטנה, אבל צריך להתחיל נכון כבר מהיום הראשון."});
 
   const rz = answers.raise;
-  if(rz && rz.val<=1) items.push("רציתם שלא יחסר לו כלום, וזה מובן. אבל <span class='hl'>ילד שמקבל הכל לא לומד להעריך</span>, לא מפתח יכולת לדחות סיפוקים, ולא רוכש כלים לנהל כסף בעצמו.");
-  else if(rz && rz.val>=2) items.push("רציתם שהילד יעריך וידע לנהל כסף, וזו המתנה הכי חשובה. רק שתדעו, <b>ילד לומד כסף בעיקר מההורים שלו, בדוגמה אישית</b>, אז הכל מתחיל מכם, מהדוגמה שאתם נותנים.");
+  if(rz && rz.val<=1) items.push({e:"🎓",t:"רציתם שלא יחסר לו כלום, וזה מובן. אבל <span class='hl'>ילד שמקבל הכל לא לומד להעריך</span>, לא מפתח יכולת לדחות סיפוקים, ולא רוכש כלים לנהל כסף בעצמו."});
+  else if(rz && rz.val>=2) items.push({e:"🎓",t:"רציתם שהילד יעריך וידע לנהל כסף, וזו המתנה הכי חשובה. רק שתדעו, <b>ילד לומד כסף בעיקר מההורים שלו, בדוגמה אישית</b>, אז הכל מתחיל מכם, מהדוגמה שאתם נותנים."});
 
   const st = answers.setup ? answers.setup.label : "";
   const cpA = answers.couple;
   if((cpA && cpA.val<=2) || st==="בעיקר אחד מאיתנו מנהל את הכל" || st==="כל אחד מנהל את שלו, פחות מודעים")
-    items.push("<span class='hl'>התקשורת שלכם סביב כסף עוד לא לגמרי עובדת</span>, ותינוק רק מגביר את הלחץ הזה. חשוב ששניכם תהיו באותו ראש לפני.");
+    items.push({e:"💬",t:"<span class='hl'>התקשורת שלכם סביב כסף עוד לא לגמרי עובדת</span>, ותינוק רק מגביר את הלחץ הזה. חשוב ששניכם תהיו באותו ראש לפני."});
 
   if(answers.cushion && answers.cushion.val<=1){
-    items.push("ומעל הכל, <span class='hl'>אין לכם כרית ביטחון אם המפרנס יאבד עבודה</span>, חלילה, דווקא כשההכנסה כבר נמוכה בגלל החופשה. כרית כזו היא בערך <b>3 עד 6 חודשי מחיה</b> (תלוי בכמה המפרנס מרוויח).");
+    items.push({e:"🛟",t:"ומעל הכל, <span class='hl'>אין לכם כרית ביטחון אם המפרנס יאבד עבודה</span>, חלילה, דווקא כשההכנסה כבר נמוכה בגלל החופשה. כרית כזו היא בערך <b>3 עד 6 חודשי מחיה</b> (תלוי בכמה המפרנס מרוויח)."});
   }
 
     let html = "<ul class='insights'>";
-  items.forEach(function(t){ html += "<li>"+t+"</li>"; });
+  items.forEach(function(o){ html += "<li><span class='ic'>"+o.e+"</span><span class='tx'>"+o.t+"</span></li>"; });
   html += "</ul>";
   html += "<div class='tease'>"+(tier.n<=3 ? "המספר המדויק שלכם, והתוכנית המלאה שלב-אחר-שלב, מחכים לכם במדריך 👇" : "אתם מוכנים. ואם תרצו רק לוודא שלא פספסתם כלום, הצעד האחרון מחכה למטה 👇")+"</div>";
   el('r_personal').innerHTML = html;
