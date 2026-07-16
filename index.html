@@ -183,9 +183,9 @@
       <div class="step-kicker">כמעט שם</div>
       <h1 style="font-size:23px">לאן לשלוח את התוצאה האישית שלכם?</h1>
       <p class="lead">מכינים לכם עכשיו קריאה אישית של רמת המוכנות והפערים. נשאיר פרטים ונראה אותה מיד.</p>
-      <div class="field"><label>שם</label><input id="f_name" type="text" placeholder="איך קוראים לך?"></div>
-      <div class="field"><label>טלפון</label><input id="f_phone" type="tel" inputmode="tel" placeholder="050-0000000"><div class="ferr" id="e_phone">מספר טלפון לא תקין (למשל 050-1234567)</div></div>
-      <div class="field"><label>אימייל</label><input id="f_email" type="email" inputmode="email" placeholder="you@email.com"><div class="ferr" id="e_email">כתובת אימייל לא תקינה</div></div>
+      <div class="field"><label>שם</label><input id="f_name" aria-label="שם מלא" type="text" placeholder="איך קוראים לך?"></div>
+      <div class="field"><label>טלפון</label><input id="f_phone" aria-label="טלפון נייד" type="tel" inputmode="tel" placeholder="050-0000000"><div class="ferr" id="e_phone">מספר טלפון לא תקין (למשל 050-1234567)</div></div>
+      <div class="field"><label>אימייל</label><input id="f_email" aria-label="אימייל" type="email" inputmode="email" placeholder="you@email.com"><div class="ferr" id="e_email">כתובת אימייל לא תקינה</div></div>
       <label class="check"><input type="checkbox" id="f_consent"><span>אני מאשר/ת לקבל דיוורים מטלי שרעבי בנימינוב.</span></label>
       <label class="check"><input type="checkbox" id="f_terms"><span>קראתי ואני מסכים/ה ל<a href="https://richlife.ravpage.co.il/takanon" target="_blank" rel="noopener">תקנון</a> ול<a href="https://richlife.ravpage.co.il/pratiuy" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</span></label>
       <div class="center" style="margin-top:20px">
@@ -600,5 +600,84 @@ function showResult(){
  }catch(e){}
 })();
 </script>
+
+<!-- ═══ רכיב נגישות RichLife - מוטמע בשני הדפים (מכר + תודה). עצמאי, בלי תלות חיצונית. ═══ -->
+<style>
+/* כפתור + תפריט נגישות */
+#a11y-btn { position: fixed; bottom: 20px; left: 16px; z-index: 998; width: 48px; height: 48px; border-radius: 50%; border: 2px solid #fff; background: #3e5448; color: #fff; font-size: 24px; line-height: 1; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.3); display: flex; align-items: center; justify-content: center; }
+#a11y-btn:focus-visible { outline: 3px solid #c1553f; outline-offset: 2px; }
+#a11y-menu { position: fixed; bottom: 78px; left: 16px; z-index: 998; width: 250px; background: #fff; border: 1px solid #d3e0df; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,.25); padding: 14px; display: none; font-family: 'Heebo', Arial, sans-serif; }
+#a11y-menu.open { display: block; }
+#a11y-menu h3 { font-size: 15px; font-weight: 800; color: #1e2b25; margin: 0 0 10px; text-align: right; }
+#a11y-menu button.a11y-opt { display: block; width: 100%; text-align: right; background: #eef4ef; border: 1px solid #d3e0df; border-radius: 10px; padding: 9px 12px; margin-bottom: 6px; font-family: inherit; font-size: 13.5px; font-weight: 600; color: #1e2b25; cursor: pointer; }
+#a11y-menu button.a11y-opt[aria-pressed="true"] { background: #3e5448; color: #fff; border-color: #3e5448; }
+#a11y-menu button.a11y-opt:focus-visible { outline: 3px solid #c1553f; }
+#a11y-menu .a11y-link { display: block; text-align: center; font-size: 12.5px; color: #3e5448; margin-top: 8px; }
+@media (max-width: 880px) { #a11y-btn { bottom: 96px; } #a11y-menu { bottom: 152px; } }
+/* מצבי נגישות */
+html.a11y-bigtext body { zoom: 1.18; }
+html.a11y-bigtext2 body { zoom: 1.35; }
+html.a11y-contrast, html.a11y-contrast img { filter: invert(1) hue-rotate(180deg); }
+html.a11y-contrast img, html.a11y-contrast video { filter: invert(1) hue-rotate(180deg); }
+html.a11y-gray { filter: grayscale(1); }
+html.a11y-links a { text-decoration: underline !important; box-shadow: 0 0 0 2px #c1553f !important; }
+html.a11y-font body, html.a11y-font body * { font-family: Arial, Helvetica, sans-serif !important; }
+html.a11y-noanim *, html.a11y-noanim *::before, html.a11y-noanim *::after { animation: none !important; transition: none !important; }
+html.a11y-cursor, html.a11y-cursor * { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path fill="black" stroke="white" stroke-width="1.2" d="M5 2l14 12h-8l-2 8z"/></svg>') 4 2, auto !important; }
+/* כיבוד העדפת מערכת להפחתת תנועה */
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+<button id="a11y-btn" aria-label="תפריט נגישות" aria-expanded="false" title="נגישות">&#9855;</button>
+<div id="a11y-menu" role="dialog" aria-label="אפשרויות נגישות">
+ <h3>נגישות</h3>
+ <button class="a11y-opt" data-cls="a11y-bigtext" aria-pressed="false">הגדלת טקסט</button>
+ <button class="a11y-opt" data-cls="a11y-bigtext2" aria-pressed="false">הגדלת טקסט נוספת</button>
+ <button class="a11y-opt" data-cls="a11y-contrast" aria-pressed="false">ניגודיות כהה</button>
+ <button class="a11y-opt" data-cls="a11y-gray" aria-pressed="false">גווני אפור</button>
+ <button class="a11y-opt" data-cls="a11y-links" aria-pressed="false">הדגשת קישורים</button>
+ <button class="a11y-opt" data-cls="a11y-font" aria-pressed="false">פונט קריא</button>
+ <button class="a11y-opt" data-cls="a11y-noanim" aria-pressed="false">עצירת אנימציות</button>
+ <button class="a11y-opt" data-cls="a11y-cursor" aria-pressed="false">סמן גדול</button>
+ <button class="a11y-opt" id="a11y-reset">איפוס נגישות</button>
+ <a class="a11y-link" href="accessibility/">הצהרת נגישות</a>
+</div>
+<script>
+(function(){
+ var KEY = 'richlife-a11y';
+ var root = document.documentElement;
+ var btn = document.getElementById('a11y-btn');
+ var menu = document.getElementById('a11y-menu');
+ var opts = menu.querySelectorAll('.a11y-opt[data-cls]');
+ function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }
+ function save(list){ try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
+ function apply(){
+  var on = load();
+  opts.forEach(function(o){
+   var c = o.getAttribute('data-cls'), active = on.indexOf(c) > -1;
+   root.classList.toggle(c, active);
+   o.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+ }
+ btn.addEventListener('click', function(){
+  var open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) menu.querySelector('.a11y-opt').focus();
+ });
+ document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && menu.classList.contains('open')) { menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); btn.focus(); } });
+ opts.forEach(function(o){
+  o.addEventListener('click', function(){
+   var c = o.getAttribute('data-cls'), on = load(), i = on.indexOf(c);
+   if (i > -1) on.splice(i, 1); else on.push(c);
+   if (c === 'a11y-bigtext') { var j = on.indexOf('a11y-bigtext2'); if (j > -1 && i === -1) on.splice(j, 1); }
+   if (c === 'a11y-bigtext2') { var k = on.indexOf('a11y-bigtext'); if (k > -1 && i === -1) on.splice(k, 1); }
+   save(on); apply();
+  });
+ });
+ document.getElementById('a11y-reset').addEventListener('click', function(){ save([]); apply(); });
+ apply();
+})();
+</script>
+<!-- ═══ סוף רכיב נגישות ═══ -->
+
 </body>
 </html>
